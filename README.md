@@ -8,7 +8,7 @@ This directory is a working area for Codex configuration experiments, active che
 | --- | --- |
 | `projects/` | Recommended home for future active project clones. |
 | `references/` | Read-only inspiration and implementation references; see its [catalog](references/README.md). |
-| `test/` | Sandboxed third-party repositories evaluated before adoption. |
+| `references/engineering-workflows/` | Evaluated engineering-workflow source material; selectively adopted skills remain installed globally. |
 | `blueprint/`, `dyad/` | Existing independent project checkouts; follow their own instructions. |
 | `.env` | Local-only environment data. Never read or commit it unless explicitly required. |
 
@@ -18,4 +18,3 @@ This directory is a working area for Codex configuration experiments, active che
 - Keep reusable source material in `references/`; do not make product changes there.
 - For agentic UI work, use the [UI reference selection guide](references/ui/README.md) before reaching for a new generator or component library.
 - Global Codex behavior belongs in `~/.codex/AGENTS.md`; project instructions take precedence.
-
