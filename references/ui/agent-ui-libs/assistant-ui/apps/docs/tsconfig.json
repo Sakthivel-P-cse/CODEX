@@ -1,0 +1,42 @@
+{
+  "extends": "@assistant-ui/x-buildutils/ts/next",
+  "compilerOptions": {
+    "paths": {
+      "@/components/ui/*": [
+        "../../packages/ui/src/components/ui/base/*",
+        "../../packages/ui/src/components/ui/radix/*"
+      ],
+      "@/components/ui/radix/*": [
+        "../../packages/ui/src/components/ui/radix/*"
+      ],
+      "@/lib/utils": ["../../packages/ui/src/lib/utils"],
+      "@/components/assistant-ui/markdown-text": [
+        "./components/assistant-ui/markdown-text"
+      ],
+      "@/components/assistant-ui/*": [
+        "../../packages/ui/src/components/assistant-ui/*"
+      ],
+      "@/components/elements/*": [
+        "../../packages/ui/src/components/elements/*",
+        "./components/elements/*"
+      ],
+      "@/*": ["./*"],
+      "@assistant-ui/ui/*": ["../../packages/ui/src/*"],
+      "fumadocs-mdx:collections/*": ["./.source/*"],
+      "@assistant-ui/react-generative-ui/*": [
+        "../../packages/react-generative-ui/src/*"
+      ],
+      "@assistant-ui/store/client": ["../../packages/store/src/client"],
+      "@assistant-ui/*": ["../../packages/*/src"],
+      "@assistant-ui/core/*": ["../../packages/core/src/*"],
+      "@assistant-ui/react/*": ["../../packages/react/src/*"],
+      "@assistant-ui/tap/*": ["../../packages/tap/src/*"],
+      "assistant-stream": ["../../packages/assistant-stream/src"],
+      "assistant-stream/*": ["../../packages/assistant-stream/src/*"],
+      "assistant-cloud": ["../../packages/cloud/src"],
+      "assistant-cloud/*": ["../../packages/cloud/src/*"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules", "**/*.test.ts", "**/*.test.tsx"]
+}

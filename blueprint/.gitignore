@@ -1,0 +1,17 @@
+# Local secrets and environment files
+.env
+.env.*
+!.env.example
+
+# Runtime and tooling output
+*.log
+coverage/
+dist/
+build/
+tmp/
+
+# Local developer files
+.DS_Store
+.idea/
+.vscode/
+
