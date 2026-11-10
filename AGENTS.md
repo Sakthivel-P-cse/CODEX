@@ -54,9 +54,11 @@ Never cut: validation at trust boundaries, error handling that prevents data los
 \#\# Delegation (token-cheap)
 
 
-Do small tasks yourself. Delegate only for: multi-file changes, planning, review/security, build failures, test-first work.
+Use Ponytail by default for general tasks and reviews. Use ECC guidance or a specialist only when the task needs a specific deeper perspective or capability Ponytail does not provide, such as a specialist checklist, dry run, or focused bug hunt. Load only the relevant guidance; do not load ECC by default.
 
-To delegate: grep \`.agents/INDEX.md\` for the best match, spawn that one custom agent with only the task and relevant file paths. Never read the ECC folder.
+Do small tasks yourself. Consider delegation only when that specialist input is needed for multi-file changes, planning, review/security, build failures, or test-first work.
+
+To delegate: grep \`.agents/INDEX.md\` for the best match, spawn that one custom agent with only the task and relevant file paths. Read ECC files only when the selected specialist guidance or capability requires them.
 
 Subagent replies in \<=200 words plus a file list or diff. One agent at a time, depth 1, no re-spawning.
 
