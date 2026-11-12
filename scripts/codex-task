@@ -1,0 +1,73 @@
+#!/usr/bin/env python3
+"""Run one Codex task with the model and effort from .agents/tiers.tsv."""
+import csv
+import sqlite3
+import subprocess
+from pathlib import Path
+import re
+import sys
+
+if len(sys.argv) != 2 or not sys.argv[1].strip():
+    sys.exit('Usage: scripts/codex-task "prompt"')
+prompt = sys.argv[1]
+table = Path(__file__).resolve().parents[1] / '.agents/tiers.tsv'
+with table.open() as stream:
+    tiers = {r['tier'].lower(): r for r in csv.DictReader(stream, delimiter='\t')}
+tiers['moderate'] = tiers['modurate']
+prefix = re.match(r'(?:/(\w+)(?=\s|$)|(\w+):)', prompt)
+tier = 'deep'
+if prefix and (name := prefix.group(1) or prefix.group(2)) in tiers:
+    tier = name
+    prompt = prompt[prefix.end():].lstrip()
+    if not prompt:
+        sys.exit('Supply a task after the tier prefix.')
+complex_task = re.search(
+    r'\b(?:architectur(?:e|al)|deadlocks?|race conditions?|data corruption|'
+    r'threat model(?:ing)?|security audits?|distributed systems?|cross[- ]service)\b',
+    prompt, re.I,
+)
+kind = complex_task.group().lower() if complex_task else 'ordinary'
+explicit = bool(prefix and name in tiers)
+if not explicit:
+    tier = 'max' if complex_task else 'deep'
+if tier == 'modurate':
+    tier = 'moderate'
+if tier == 'moderate' and re.search(
+    r'\b(?:implement|refactor|debug|fix|edit|patch)\b|'
+    r'\bwrite\s+(?:code|a script|a function|a program)\b', prompt, re.I
+):
+    tier = 'sol_light'
+if tier == 'deep':
+    tiers['deep']['reasoning_effort'] = 'xhigh' if complex_task else 'high'
+
+# Count successful explicit choices as preferences; automatic choices cannot reinforce themselves.
+db = None
+try:
+    db = sqlite3.connect(table.parents[1] / '.codex-routing.sqlite3')
+    db.execute("""CREATE TABLE IF NOT EXISTS choices (
+        kind TEXT, tier TEXT, effort TEXT, explicit INTEGER, status INTEGER, runs INTEGER,
+        PRIMARY KEY(kind, tier, effort, explicit, status))""")
+    if not explicit:
+        preferred_max = db.execute("""SELECT COALESCE(SUM(runs), 0) FROM choices
+            WHERE kind=? AND explicit=1 AND status=0 AND tier='max'""", (kind,)).fetchone()[0]
+        if preferred_max >= 2:
+            tier = 'max'
+except sqlite3.Error as error:
+    print(f'Routing history unavailable: {error}', file=sys.stderr)
+    db = None
+mode = 'moderate' if tier in ('modurate', 'sol_light') else tier
+prompt = f'{mode}: {prompt}'
+row = tiers[tier]
+result = subprocess.run(['codex', 'exec', '-m', row['model'], '-c',
+                         'model_reasoning_effort="' + row['reasoning_effort'] + '"', '--', prompt])
+if db is not None:
+    try:
+        with db:
+            db.execute("""INSERT INTO choices VALUES (?, ?, ?, ?, ?, 1)
+                ON CONFLICT DO UPDATE SET runs=runs+1""",
+                (kind, tier, row['reasoning_effort'], explicit, result.returncode))
+    except sqlite3.Error as error:
+        print(f'Could not save routing history: {error}', file=sys.stderr)
+    finally:
+        db.close()
+sys.exit(result.returncode if result.returncode >= 0 else 128 - result.returncode)

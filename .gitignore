@@ -1,1 +1,5 @@
 .env
+ECC/
+rea/
+
+/.codex-routing.sqlite3*

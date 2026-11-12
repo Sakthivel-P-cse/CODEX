@@ -1,0 +1,6 @@
+tier	model	reasoning_effort
+LEAN	gpt-6-luna	xhigh
+MODURATE	gpt-6.1-terra	medium
+DEEP	gpt-6.1-sol	high
+MAX	gpt-6-astra	low
+SOL_LIGHT	gpt-6.1-sol	low
