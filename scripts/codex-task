@@ -39,6 +39,14 @@ if tier == 'moderate' and re.search(
     tier = 'sol_light'
 if tier == 'deep':
     tiers['deep']['reasoning_effort'] = 'xhigh' if complex_task else 'high'
+# shortcut: free-form requests use clear Git action cues; use structured task metadata if routing must be exact.
+git_task = re.search(
+    r'\bgit\s+(?:-C\s+\S+\s+)?(?:commit|push)\b|'
+    r'\bcommit\s+and\s+push\b|'
+    r'\b(?:commit|push)\b(?=\s+(?:the|this|my|our|these|those|all|changes|branch|'
+    r'files|code|work|it|to|origin)\b)|'
+    r'(?:^\s*|\b(?:you|please|and|then)\s+)(?:commit|push)\s*[?.!]*$', prompt, re.I,
+)
 
 # Count successful explicit choices as preferences; automatic choices cannot reinforce themselves.
 db = None
@@ -55,6 +63,8 @@ try:
 except sqlite3.Error as error:
     print(f'Routing history unavailable: {error}', file=sys.stderr)
     db = None
+if git_task:
+    tier = 'moderate'
 mode = 'moderate' if tier in ('modurate', 'sol_light') else tier
 prompt = f'{mode}: {prompt}'
 row = tiers[tier]
