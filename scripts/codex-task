@@ -15,30 +15,41 @@ with table.open() as stream:
     tiers = {r['tier'].lower(): r for r in csv.DictReader(stream, delimiter='\t')}
 tiers['moderate'] = tiers['modurate']
 prefix = re.match(r'(?:/(\w+)(?=\s|$)|(\w+):)', prompt)
-tier = 'deep'
+tier = 'moderate'
+if prefix and prefix.group(2) == 'max':
+    sys.exit('Use /max to select MAX.')
 if prefix and (name := prefix.group(1) or prefix.group(2)) in tiers:
     tier = name
     prompt = prompt[prefix.end():].lstrip()
     if not prompt:
         sys.exit('Supply a task after the tier prefix.')
-complex_task = re.search(
-    r'\b(?:architectur(?:e|al)|deadlocks?|race conditions?|data corruption|'
-    r'threat model(?:ing)?|security audits?|distributed systems?|cross[- ]service)\b',
-    prompt, re.I,
+hard_task = re.search(
+    r'\b(?:deadlocks?|race conditions?|data corruption|threat model(?:ing)?|'
+    r'security audits?|distributed systems?|cross[- ]service)\b', prompt, re.I,
 )
-kind = complex_task.group().lower() if complex_task else 'ordinary'
+technical_task = hard_task or re.search(
+    r'\b(?:architectur(?:e|al)|migrat(?:e|ion)|concurren(?:cy|t)|'
+    r'performance regressions?|authentication|authorization)\b', prompt, re.I,
+)
+coding_task = re.search(
+    r'\b(?:implement|refactor|debug|edit|patch|create|add|build|change|update|remove|delete)\b|'
+    r'\bfix\b(?!\s+(?:a\s+)?typo\b)|'
+    r'\bwrite\s+(?:code|a script|a function|a program)\b', prompt, re.I,
+)
+simple_task = re.match(
+    r'(?i)^(?:please\s+)?(?:list|show|print|count|summari[sz]e|'
+    r'fix\s+(?:a\s+)?typo|correct\s+spelling)\b', prompt,
+) and not coding_task
+kind = technical_task.group().lower() if technical_task else 'ordinary'
 explicit = bool(prefix and name in tiers)
 if not explicit:
-    tier = 'max' if complex_task else 'deep'
+    tier = 'lean' if simple_task else 'deep' if technical_task else 'moderate'
 if tier == 'modurate':
     tier = 'moderate'
-if tier == 'moderate' and re.search(
-    r'\b(?:implement|refactor|debug|fix|edit|patch)\b|'
-    r'\bwrite\s+(?:code|a script|a function|a program)\b', prompt, re.I
-):
+if tier == 'moderate' and coding_task:
     tier = 'sol_light'
 if tier == 'deep':
-    tiers['deep']['reasoning_effort'] = 'xhigh' if complex_task else 'high'
+    tiers['deep']['reasoning_effort'] = 'xhigh' if hard_task else 'high'
 # shortcut: free-form requests use clear Git action cues; use structured task metadata if routing must be exact.
 git_task = re.search(
     r'\bgit\s+(?:-C\s+\S+\s+)?(?:commit|push)\b|'
@@ -55,18 +66,18 @@ try:
     db.execute("""CREATE TABLE IF NOT EXISTS choices (
         kind TEXT, tier TEXT, effort TEXT, explicit INTEGER, status INTEGER, runs INTEGER,
         PRIMARY KEY(kind, tier, effort, explicit, status))""")
-    if not explicit:
+    if not explicit and tier == 'deep' and technical_task:
         preferred_max = db.execute("""SELECT COALESCE(SUM(runs), 0) FROM choices
             WHERE kind=? AND explicit=1 AND status=0 AND tier='max'""", (kind,)).fetchone()[0]
         if preferred_max >= 2:
-            tier = 'max'
+            tiers['deep']['reasoning_effort'] = 'xhigh'
 except sqlite3.Error as error:
     print(f'Routing history unavailable: {error}', file=sys.stderr)
     db = None
 if git_task:
     tier = 'moderate'
 mode = 'moderate' if tier in ('modurate', 'sol_light') else tier
-prompt = f'{mode}: {prompt}'
+prompt = f'/max {prompt}' if tier == 'max' else f'{mode}: {prompt}'
 row = tiers[tier]
 result = subprocess.run(['codex', 'exec', '-m', row['model'], '-c',
                          'model_reasoning_effort="' + row['reasoning_effort'] + '"', '--', prompt])

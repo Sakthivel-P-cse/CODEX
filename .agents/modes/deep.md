@@ -6,4 +6,6 @@ Delegate only useful independent work. Give each subagent a narrow objective, re
 
 Make the smallest complete change using Ponytail rules. Review the complete diff for correctness, regressions, validation and error handling. Run focused checks through the normal entry point; expand them only when evidence warrants it.
 
-Report changes, checks, skipped work and material risks concisely. Start every reply with "Mode: DEEP" during this task. The next unprefixed task defaults to DEEP.
+If MAX seems necessary, diagnose enough to explain why DEEP is insufficient, then stop before the fix. Wait for the user to start a task with `/max`; never select MAX automatically.
+
+Report changes, checks, skipped work and material risks concisely. Start every reply with "Mode: DEEP" during this task. Choose the next task's mode afresh; ordinary tasks use MODERATE and clearly simple tasks use LEAN.
