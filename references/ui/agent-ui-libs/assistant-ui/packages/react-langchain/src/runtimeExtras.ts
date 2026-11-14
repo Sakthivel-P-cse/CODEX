@@ -1,5 +1,0 @@
-import { createRuntimeExtras } from "@assistant-ui/core/react";
-import type { LangChainRuntimeExtras } from "./types";
-
-export const langChainExtras =
-  createRuntimeExtras<LangChainRuntimeExtras>("useStreamRuntime");

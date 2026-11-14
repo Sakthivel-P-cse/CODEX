@@ -1,8 +1,0 @@
-{
-  "title": "Agentic Protocols",
-  "icon": "lucide/Zap",
-  "frontend": {
-    "kind": "universal"
-  },
-  "pages": ["index", "ag-ui", "mcp", "a2a"]
-}

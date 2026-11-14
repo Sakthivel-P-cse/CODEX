@@ -16,8 +16,6 @@ with table.open() as stream:
 tiers['moderate'] = tiers['modurate']
 prefix = re.match(r'(?:/(\w+)(?=\s|$)|(\w+):)', prompt)
 tier = 'moderate'
-if prefix and prefix.group(2) == 'max':
-    sys.exit('Use /max to select MAX.')
 if prefix and (name := prefix.group(1) or prefix.group(2)) in tiers:
     tier = name
     prompt = prompt[prefix.end():].lstrip()
@@ -77,7 +75,7 @@ except sqlite3.Error as error:
 if git_task:
     tier = 'moderate'
 mode = 'moderate' if tier in ('modurate', 'sol_light') else tier
-prompt = f'/max {prompt}' if tier == 'max' else f'{mode}: {prompt}'
+prompt = f'{mode}: {prompt}'
 row = tiers[tier]
 result = subprocess.run(['codex', 'exec', '-m', row['model'], '-c',
                          'model_reasoning_effort="' + row['reasoning_effort'] + '"', '--', prompt])

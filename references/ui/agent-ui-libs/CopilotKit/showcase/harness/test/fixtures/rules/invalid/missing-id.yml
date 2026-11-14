@@ -1,8 +1,0 @@
-name: "missing id"
-owner: "@oss"
-signal:
-  dimension: smoke
-triggers:
-  - green_to_red
-template:
-  text: "x"

@@ -1,3 +1,0 @@
-[OK] strands
-
-Summary: OK=1 SKIP=0 WARN=3 FAIL=63
