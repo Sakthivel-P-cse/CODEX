@@ -32,3 +32,11 @@ MASTER AND WORKERS
 - Use a MODERATE agent (Terra medium) for every `git commit` or `git push` operation, including when the master is DEEP or MAX. Keep normal review and approval checks.
 - The launcher routes clear commit/push requests to MODERATE; free-form cues are heuristic. In existing chats, modes change workflow, not the host model. Delegate actual Git operations to MODERATE.
 - Never auto-select MAX. If needed, analyze in DEEP, stop before the fix and wait for explicit MAX opt-in. History can raise DEEP effort but never select MAX.
+
+## Commit and push budget
+
+- Commit/push delivery has its own budget, separate from the project implementation budget, and still runs through a MODERATE Terra medium agent.
+- Before delivery starts, close the project's active accounting interval by recording `finished` and its measured usage in `run_budget.json`. This closes accounting only; do not mark unfinished project work complete.
+- Create `.swarm/git-<run>/run_budget.json` using the existing schema, with a fresh `started` timestamp, an estimated cost of 1.43 credits and a default `budget` of 2.86 credits. Register the exact delivery agent path with an allowance of 2.86 credits before it runs Git commands. This budget covers delivery review, commit, push and delivery-related conflict handling; it does not authorize unrelated fixes.
+- Keep project and Git accounting intervals non-overlapping: the guard selects the latest active budget and totals workspace usage during that interval. Report delivery usage separately; never deduct it from the project's remaining budget. Close the Git interval with `finished` and `est_total` when delivery ends, including failure or a blocked push.
+- At the delivery limit, stop and report progress; do not borrow from the project budget or reset the delivery budget to continue. If implementation resumes, open a new project accounting interval using only its remaining allowance and preserve the earlier ledger.
