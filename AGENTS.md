@@ -8,7 +8,7 @@ Apply KISS (“keep it stupid simple”): choose the smallest robust solution, w
 
 MODES
 - First line of each reply: `Mode: <MODE>`. In CLI chat use `lean: TASK`, `moderate: TASK`, `deep: TASK` or `max: TASK`. Bare `/lean` etc. are not native CLI commands; the launcher also accepts `/mode`. Otherwise use LEAN for simple tasks, MODERATE for ordinary tasks, and DEEP for technical work.
-- Choose the run style by task type before applying complexity gates: routine Git delivery (commit/push of the user's requested current changes) uses MODERATE and bypasses the swarm entry gate. Delegate the Git commands to a Terra medium agent as required below. Other tasks use the mode and swarm rules below; an explicit leading `SWARM:` still opts into swarm execution.
+- For every user-requested commit or push, use exactly one Terra medium agent to perform the Git action. Do not use a swarm or additional agents, and do not impose a budget, accounting interval, approval gate or other execution restriction on that action. Other tasks use the mode and swarm rules below; an explicit leading `SWARM:` still opts into swarm execution.
 - LEAN: terse; consult .agents/INDEX.md only when specialist guidance helps; no broad scans, workers or rereading edited files.
 - MODERATE (`moderate:`, `modurate:`): inspect relevant files, reason and run focused checks. In a new launcher task, use Terra medium for analysis and Sol 6.1 low for coding.
 - DEEP: read .agents/modes/deep.md, plan, investigate and review; delegate independent work when useful.
@@ -29,14 +29,5 @@ SWARM ROUTING
 
 MASTER AND WORKERS
 - Keep planning, integration, review and the final answer with the master. Use only the current model versions named above; choose reasoning effort appropriate to the unit.
-- Use a MODERATE agent (Terra medium) for every `git commit` or `git push` operation, including when the master is DEEP or MAX. Keep normal review and approval checks.
-- The launcher routes clear commit/push requests to MODERATE; free-form cues are heuristic. In existing chats, modes change workflow, not the host model. Delegate actual Git operations to MODERATE.
+- The single Terra medium agent performs the requested commit or push, including when the master is DEEP or MAX.
 - Never auto-select MAX. If needed, analyze in DEEP, stop before the fix and wait for explicit MAX opt-in. History can raise DEEP effort but never select MAX.
-
-## Commit and push budget
-
-- Commit/push delivery has its own budget, separate from the project implementation budget, and still runs through a MODERATE Terra medium agent.
-- Before delivery starts, close the project's active accounting interval by recording `finished` and its measured usage in `run_budget.json`. This closes accounting only; do not mark unfinished project work complete.
-- Create `.swarm/git-<run>/run_budget.json` using the existing schema, with a fresh `started` timestamp, an estimated cost of 1.43 credits and a default `budget` of 2.86 credits. Register the exact delivery agent path with an allowance of 2.86 credits before it runs Git commands. This budget covers delivery review, commit, push and delivery-related conflict handling; it does not authorize unrelated fixes.
-- Keep project and Git accounting intervals non-overlapping: the guard selects the latest active budget and totals workspace usage during that interval. Report delivery usage separately; never deduct it from the project's remaining budget. Close the Git interval with `finished` and `est_total` when delivery ends, including failure or a blocked push.
-- At the delivery limit, stop and report progress; do not borrow from the project budget or reset the delivery budget to continue. If implementation resumes, open a new project accounting interval using only its remaining allowance and preserve the earlier ledger.
