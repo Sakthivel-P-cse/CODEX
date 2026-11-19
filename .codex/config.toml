@@ -1,0 +1,382 @@
+# Compact at completed turns from 50%; automatic fallback at 65% of the current usable window.
+# gpt-6.1-sol: 500,000 * 95% * 65% = 308,750; recalculate the token limit when changing models.
+# shortcut: checked at harness boundaries, use request budgeting for a strict no-overshoot ceiling.
+model_post_turn_compact_threshold_percent = 50
+model_auto_compact_token_limit = 308750
+model_auto_compact_token_limit_scope = "total"
+
+model = "gpt-6.1-terra"
+model_reasoning_effort = "low"
+approvals_reviewer = "auto_review"
+plan_mode_reasoning_effort = "medium"
+
+[features]
+memories = true
+
+[agents]
+enabled = true
+max_concurrent_threads_per_session = 6
+max_depth = 1
+
+default_subagent_model = "gpt-6-luna"
+default_subagent_reasoning_effort = "xhigh"
+[plugins."github@openai-curated"]
+enabled = true
+
+[plugins."codex-app-tools@openai-bundled"]
+enabled = true
+
+[plugins."browser@openai-bundled"]
+enabled = true
+
+[plugins."unified-computer-use@openai-bundled"]
+enabled = true
+
+[plugins."visualize@openai-bundled"]
+enabled = true
+
+[plugins."documents@openai-primary-runtime"]
+enabled = true
+
+[plugins."pdf@openai-primary-runtime"]
+enabled = true
+
+[plugins."spreadsheets@openai-primary-runtime"]
+enabled = true
+
+[plugins."presentations@openai-primary-runtime"]
+enabled = true
+
+[plugins."template-creator@openai-primary-runtime"]
+enabled = true
+
+[plugins."vercel@openai-curated"]
+enabled = true
+
+[projects."/home/sakthi/projects/new"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/codex"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/ALLDIGI-MANAGEMENT"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/BLOCKCHAIN-AGENT"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/sakthi"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/Regen"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/glpi"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/CRDT-based-decentralized-rate-limiting"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/Repo-Guardian-Multi-Agent-Codebase-Assistant-with-Secure-Tool-Gateway"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/TrustChain-Zero-Trust-Authentication-System-with-Continuous-Trust-Scoring"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/agents.md"]
+trust_level = "trusted"
+
+[projects."/home/sakthi"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/investiga_expo_app"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/ppt"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/Untitled Folder"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/ghostfolio"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/ASSET-MANAGEMENT"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/CRDT"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/PORTFOLIO-TRADE"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/ppt/stitch_tradejournal_pro"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/stitch/stitch_tradejournal_pro"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/stitch_tradejournal_pro"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/hyprland"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/Viper"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/agents-playground"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/causa"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/viper"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/Orchestra"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/Orchestra-the-distributed-multi-agent-orchestration-platform"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/agpair"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/AgentsMesh"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/temperature-controlled-fan-arduino"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/lab manual"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/dyad"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/autobuild"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/health"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/CIT_Gatepass_App"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/cdc"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/AUTOBUILD"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/pi"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/.config/hypr"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/frontend"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/PERSONAL-PORTFOLIO"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/Models/qwen3/qwen-agent"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/resume"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/sih"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/sih/Orca"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/openfox"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/Models/qwen3"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/a2"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/Echo-Music"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/Nevo_Stud"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/alice/OpenAlice"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/.openalice/workspaces/workspaces/chat-cool-ivory-porch"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/El-Connecto"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/deepseek-harness"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/a3"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/ppt/ep"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/a4"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/codex"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/AgentCoder"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/harness/harness2"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/harness"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/harness/a4"]
+trust_level = "trusted"
+
+[projects."/home/sakthi/projects/Sakthivel-P-cse"]
+trust_level = "trusted"
+
+[mcp_servers.stitch]
+url = "https://stitch.googleapis.com/mcp"
+
+[mcp_servers.stitch.env_http_headers]
+
+[mcp_servers.21st]
+url = "https://21st.dev/api/mcp"
+bearer_token_env_var = "API_KEY_21ST"
+
+[mcp_servers.graft]
+command = "npx"
+args = ["-y", "@nanonets/graft", "mcp"]
+
+[mcp_servers.graft.env]
+DO_NOT_TRACK = "1"
+
+[mcp_servers.dejavu]
+command = "/home/sakthi/.bun/bin/bun"
+args = ["run", "/home/sakthi/projects/Nevo_Stud/node_modules/@sanjayrohith/dejavu/src/mcp.ts"]
+
+[mcp_servers.rea]
+command = "npx"
+args = ["-y", "rea-agents@6.8.0", "mcp"]
+startup_timeout_sec = 30.0
+tool_timeout_sec = 450.0
+
+[mcp_servers.rea.env]
+HOPPER_LAUNCHER_PATH = "/opt/hopper/bin/Hopper"
+REA_ADB_PATH = "/home/sakthi/projects/REV-ENG/tools/android-sdk/platform-tools/adb"
+REA_JADX_MCP_JAR = "/home/sakthi/projects/REV-ENG/tools/rea/jadx-headless-mcp-0.7.1-all.jar"
+
+[mcp_servers.node_repl]
+command = "/usr/lib/chatgpt/resources/cua_node/bin/node_repl"
+env_vars = ["BROWSER_USE_ACCESS_EXECUTOR_ID", "BROWSER_USE_ACCESS_PIPE_PATH", "BROWSER_USE_ACCESS_VERIFYING_IDENTITY"]
+startup_timeout_sec = 120.0
+
+[mcp_servers.node_repl.env]
+BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab,mcpapps"
+BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
+BROWSER_USE_CODEX_APP_VERSION = "26.1103.60933"
+BROWSER_USE_TINYSKY_ENABLED = "1"
+CODEX_CLI_PATH = "/usr/lib/chatgpt/resources/codex"
+CODEX_HOME = "/home/sakthi/.codex"
+NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = ""
+NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = ""
+NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
+NODE_REPL_NODE_MODULE_DIRS = "/usr/lib/chatgpt/resources/cua_node/lib/node_modules"
+NODE_REPL_NODE_PATH = "/usr/lib/chatgpt/resources/cua_node/bin/node"
+NODE_REPL_TRUSTED_CODE_PATHS = "/home/sakthi/.codex:/usr/lib/chatgpt/resources/cua_node/lib/node_modules"
+NODE_REPL_TRUSTED_SERVICES = '{"browser":"/home/sakthi/.codex/plugins/cache/openai-bundled/browser/26.1103.60933/scripts/browser-service.mjs"}'
+
+[mcp_servers.vercel]
+url = "https://mcp.vercel.com"
+
+[tui]
+screen_reader_detection_done = true
+status_line = ["model-with-reasoning", "current-dir", "five-hour-limit", "total-input-tokens", "total-output-tokens", "task-progress"]
+status_line_use_colors = true
+
+[tui.model_availability_nux]
+"gpt-5.6-sol" = 4
+gpt-6-astra = 4
+"gpt-6.1-sol" = 4
+
+[marketplaces.openai-bundled]
+source_type = "local"
+source = "/home/sakthi/.codex/.tmp/bundled-marketplaces/openai-bundled"
+
+[marketplaces.openai-primary-runtime]
+source_type = "local"
+source = "/home/sakthi/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
+
+[desktop]
+conversationDetailMode = "STEPS_COMMANDS"
+ambient-suggestions-enabled = false
+appearanceLightCodeThemeId = "absolutely"
+appearanceTheme = "dark"
+
+[desktop.open-in-target-preferences]
+global = "kitty"
+
+[desktop.appearanceLightChromeTheme]
+accent = "#cc7d5e"
+accentSource = "custom"
+contrast = 45
+ink = "#2d2d2b"
+opaqueWindows = false
+surface = "#f9f9f7"
+
+[desktop.appearanceLightChromeTheme.fonts]
+
+[desktop.appearanceLightChromeTheme.semanticColors]
+diffAdded = "#00c853"
+diffRemoved = "#ff5f38"
+skill = "#cc7d5e"
+
+[desktop.appearanceDarkChromeTheme]
+accent = "#3a83f7"
+accentSource = "chatgpt"
+contrast = 60
+ink = "#ffffff"
+opaqueWindows = false
+surface = "#181818"
+
+[desktop.appearanceDarkChromeTheme.fonts]
+
+[desktop.appearanceDarkChromeTheme.semanticColors]
+diffAdded = "#40c977"
+diffRemoved = "#fa423e"
+skill = "#ad7bf9"
+
+
+[profiles.deep]
+model = "gpt-6.1-sol"
+model_reasoning_effort = "xhigh"
+
+[profiles.max]
+model = "gpt-6-astra"
+model_reasoning_effort = "low"
+
+[profiles.modurate]
+model = "gpt-6.1-terra"
+model_reasoning_effort = "medium"
+
+[hooks.state]
+
+[hooks.state."/home/sakthi/.codex/hooks.json:pre_tool_use:0:0"]
+trusted_hash = "sha256:849ee383a046fef1d72911294f265b2dbb6ea89e5a7c543d11898ab2636c89a1"
+enabled = false
